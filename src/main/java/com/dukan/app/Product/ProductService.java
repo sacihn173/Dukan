@@ -26,4 +26,9 @@ public class ProductService {
         psSrv.createProductStats(product.getProductId(), 0, 0);
         return product;
     }
+
+    public Product findByProductId(int productId) {
+        return productRpo.findById(productId).orElse(null);
+    }
+
 }
