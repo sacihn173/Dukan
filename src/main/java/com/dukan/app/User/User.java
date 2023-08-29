@@ -4,6 +4,7 @@ import com.dukan.app.Order.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,7 @@ public class User {
     private String name;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    Set<Order> orders;
+    Set<Order> orders = new HashSet<>();
 
     public int getUserId() {
         return userId;
@@ -41,4 +42,5 @@ public class User {
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
+
 }

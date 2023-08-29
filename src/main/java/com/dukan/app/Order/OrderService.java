@@ -3,6 +3,7 @@ package com.dukan.app.Order;
 import com.dukan.app.CommonProductStats.CommonProductStatsService;
 import com.dukan.app.Product.Product;
 import com.dukan.app.ProductStats.ProductStatsService;
+import com.dukan.app.Tags.Tag;
 import com.dukan.app.User.User;
 import com.dukan.app.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,11 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         // add sales to product stats
+        User user = userSrv.findUserById(order.getUser().getUserId());
         for(Product product : order.getProducts()) {
             psSrv.addSales(product.getProductId());
         }
+        userSrv.save(user);
         updateCommonProductSalesFromUserHistory(order);
         // TODO : This return additional field values as null for the first time, fix it
         return orderRpo.save(order);

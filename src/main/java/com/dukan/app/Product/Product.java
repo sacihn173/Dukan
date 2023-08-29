@@ -6,6 +6,7 @@ import com.dukan.app.Tags.Tag;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,13 +20,13 @@ public class Product {
     private Integer price;
     @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     @JsonBackReference
-    private Set<Order> orders;
+    private Set<Order> orders = new HashSet<>();
     @ManyToMany
     @JoinTable(
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "productId"),
             inverseJoinColumns = @JoinColumn(name = "tag", referencedColumnName = "tag")
     )
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
     public Integer getProductId() {
         return productId;

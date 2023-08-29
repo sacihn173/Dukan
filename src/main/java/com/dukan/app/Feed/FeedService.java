@@ -28,60 +28,27 @@ public class FeedService {
 
     public List<Product> generateUserFeed(int userId, int size) {
         List<Product> feed = new ArrayList<>();
-        // get all history products
+        /*
+         1. get user history products to get tags from them
+         2. get products with similar tags
+         3. from common stats get order result of products to be in feed
+         4. get details of feed products (with limit 'size')
+         */
+
         User user = userSrv.findUserById(userId);
-        // TODO: return trending products here
-        if(user == null) return feed;
+        List<Integer> historyProductIds = new ArrayList<>();
+        for(Order order : user.getOrders())
+            for(Product product : order.getProducts())
+                historyProductIds.add(product.getProductId());
 
-        Set<Integer> hisProductIds = new HashSet<>();
-        for(Order order : user.getOrders()) {
-            for(Product product : order.getProducts()) {
-                hisProductIds.add(product.getProductId());
-            }
-        }
+        List<String> userHistoryTags = tagSrv.getProductTags(historyProductIds);
 
-        // [history product, product with similar tag, common sales]
-        List<List<Integer>> similarProducts = new ArrayList<>();
-        // find products with same tags
-        for(Order order : user.getOrders()) {
-            for(Product product : order.getProducts()) {
-                for(Tag tag : product.getTags()) {
-                    Set<Product> pWithTags = tagSrv.findProductsByTag(tag.getTag());
-                    for(Product p : pWithTags) {
-                        similarProducts.add(Arrays.asList(product.getProductId(), p.getProductId(), 0));
-                    }
-                }
-            }
-        }
+        List<Integer> productsWithSameTags = productSrv.findProductByTags(userHistoryTags);
 
-        // get common sales of the products
-        for(List<Integer> v : similarProducts) {
-            CommonProductStats cps = cpsSrv.findByProductIds(v.get(0), v.get(1));
-            if(cps != null) {
-                v.set(2, cps.getSales());
-            } else v.set(2, 0);
-        }
-        Map<Integer, Integer> productSales = new HashMap<>();
-        for(var v : similarProducts)
-            productSales.put(v.get(1), v.get(2));
-        similarProducts.clear();
-        for (Map.Entry<Integer, Integer> entry : productSales.entrySet()) {
-            similarProducts.add(Arrays.asList(entry.getKey(), entry.getValue()));
-        }
+        List<Integer> feedProductIds = cpsSrv.getStatsForProductOrderedBySales(productsWithSameTags, 0, size);
 
-        // sort in descending order by common sales
-        Collections.sort(similarProducts, new Comparator<List<Integer>>() {
-            @Override
-            public int compare(List<Integer> o1, List<Integer> o2) {
-                return o2.get(1)-o1.get(1);
-            }
-        });
+        feed = productSrv.findByProductIds(feedProductIds);
 
-        for(var v : similarProducts) {
-            if(size == 0) return feed;
-            feed.add(productSrv.findByProductId(v.get(0)));
-            size--;
-        }
         return feed;
     }
 

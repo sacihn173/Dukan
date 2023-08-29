@@ -4,6 +4,7 @@ import com.dukan.app.Product.Product;
 import com.dukan.app.User.User;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,15 +14,15 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer orderId;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER) /*Merge lets only association with existing users*/
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY) /*Merge lets only association with existing users*/
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "orderId"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "productId")
     )
-    private Set<Product> products;
+    private Set<Product> products = new HashSet<>();
 
     public Integer getOrderId() {
         return orderId;

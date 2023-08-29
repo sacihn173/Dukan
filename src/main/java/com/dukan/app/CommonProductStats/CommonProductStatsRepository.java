@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,9 @@ public interface CommonProductStatsRepository extends JpaRepository<CommonProduc
     )
     Optional<CommonProductStats> findByProductIds(int product1Id, int product2Id);
 
+    @Query(
+            value = "SELECT product1Id FROM common_product_stats WHERE product1id in :productIds order by sales limit :limit offset :offset",
+            nativeQuery = true
+    )
+    List<Integer> getStatsFroProductOrderedBySales(List<Integer> productIds, int offset, int limit);
 }

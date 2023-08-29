@@ -13,4 +13,8 @@ public class UserService {
         return userRpo.findById(userId).orElse(null);
     }
 
+    public User save(User user) {
+        return userRpo.save(user);
+    }
+
 }

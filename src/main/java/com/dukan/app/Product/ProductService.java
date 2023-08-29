@@ -6,6 +6,8 @@ import com.dukan.app.Tags.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -31,4 +33,11 @@ public class ProductService {
         return productRpo.findById(productId).orElse(null);
     }
 
+    public List<Integer> findProductByTags(List<String> tags) {
+        return productRpo.findByTags(tags);
+    }
+
+    public List<Product> findByProductIds(List<Integer> productIds) {
+        return productRpo.findByProductIds(productIds);
+    }
 }

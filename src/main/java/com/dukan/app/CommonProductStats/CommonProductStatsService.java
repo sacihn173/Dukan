@@ -3,6 +3,8 @@ package com.dukan.app.CommonProductStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommonProductStatsService {
 
@@ -24,6 +26,10 @@ public class CommonProductStatsService {
             cps.setSales(cps.getSales() + val);
             cpsRpo.save(cps);
         }
+    }
+
+    public List<Integer> getStatsForProductOrderedBySales(List<Integer> productIds, int offset, int size) {
+        return cpsRpo.getStatsFroProductOrderedBySales(productIds, offset, size);
     }
 
     public void addCommonProductImpressions(int product1Id, int product2Id, int val) {

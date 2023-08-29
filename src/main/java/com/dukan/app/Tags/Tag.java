@@ -1,6 +1,7 @@
 package com.dukan.app.Tags;
 
 import com.dukan.app.Product.Product;
+import com.dukan.app.User.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -31,4 +32,5 @@ public class Tag {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
 }
