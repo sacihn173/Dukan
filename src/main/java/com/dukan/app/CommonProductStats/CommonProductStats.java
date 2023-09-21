@@ -2,19 +2,25 @@ package com.dukan.app.CommonProductStats;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 /**
  * 'product1Id' < 'product2Id', always followed
  */
 @Entity
 @Table(name = "common_product_stats")
-public class CommonProductStats {
+public class CommonProductStats implements Serializable {
+
+    private static final long serialVersionUID = -1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Integer product1Id;
     private Integer product2Id;
+    /* Common impressions on both the products */
     private Integer impressions;
+    /* Common sales of both the products */
     private Integer sales;
 
     public CommonProductStats() {

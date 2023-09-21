@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Generate and feed random large volume of data into DB
+ */
+
 @Service
 public class Testing {
 
@@ -40,9 +44,9 @@ public class Testing {
             userRepository.save(user);
         }
         for(int i = 0; i < 10000; i++) {
-            Product prodcut = new Product();
-            prodcut.setProductName("headphone" + " " + i);
-            prodcut.setPrice(i);
+            Product product = new Product();
+            product.setProductName("headphone" + " " + i);
+            product.setPrice(i);
             Set<Tag> s = new HashSet<>();
             Tag t1 = new Tag();
             t1.setTag("electronics");
@@ -51,8 +55,8 @@ public class Testing {
             Tag t3 = new Tag();
             t3.setTag("phone");
             s.addAll(Arrays.asList(t1, t2, t3));
-            prodcut.setTags(s);
-            productService.createProduct(prodcut);
+            product.setTags(s);
+            productService.createProduct(product);
         }
         for(int i = 0; i < 1000; i++) {
             int userId = (i+1) % 500;

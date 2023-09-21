@@ -2,10 +2,14 @@ package com.dukan.app.ProductStats;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 /* Every time a 'Product' is created, create a 'ProductStats' */
 @Entity
 @Table(name = "product_stats")
-public class ProductStats {
+public class ProductStats implements Serializable {
+
+    private static final long serialVersionUID = -1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -5,15 +5,18 @@ import com.dukan.app.User.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "tags")
-public class Tag {
+public class Tag implements Serializable {
+
+    private static final long serialVersionUID = -1L;
 
     @Id
     private String tag;
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<Product> products;
 
@@ -33,4 +36,11 @@ public class Tag {
         this.products = products;
     }
 
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "tag='" + tag + '\'' +
+                ", products=" + products +
+                '}';
+    }
 }

@@ -20,9 +20,11 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        testing.test();
-        return ResponseEntity.ok(new User());
-//        return ResponseEntity.ok(userRpo.save(user));
+        /**
+            testing.test();
+            return ResponseEntity.ok(new User());
+        */
+        return ResponseEntity.ok(userRpo.save(user));
     }
 
 }
